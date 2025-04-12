@@ -7,6 +7,8 @@ from torchvision import datasets, transforms
 from torch.utils.data import DataLoader, WeightedRandomSampler
 from collections import Counter
 from src.components.data_transformation import DataTransformation
+from src.components.model_trainer import ModelTrainer
+from src.components.model_evaluation import evaluate_model
 
 @dataclass
 class DataIngestionConfig:
@@ -66,3 +68,8 @@ class DataIngestion:
         train_transform, test_transform = transformer.get_transforms()
         train_dataset = datasets.ImageFolder(root=train_dir, transform=train_transform)
         test_dataset = datasets.ImageFolder(root=test_dir, transform=test_transform)
+        
+        trainer = ModelTrainer()
+        
+        model = trainer.train_model(train_loader, test_loader, class_names=["MildDemented", "ModerateDemented", "NonDemented", "VeryMildDemented"])
+        evaluate_model(model, test_loader, class_names=['MildDemented', 'ModerateDemented', 'NonDemented', 'VeryMildDemented'], device=device)

@@ -7,9 +7,9 @@ from src.exception.exception import customexception
 
 @dataclass
 class DataTransformationConfig:
-    image_size: tuple = (64, 64)
-    mean: list = (0.5,)
-    std: list = (0.5,)
+    image_size: tuple = (224, 224)  # Updated for ResNet18
+    mean: list = (0.485, 0.456, 0.406)  # ImageNet mean
+    std: list = (0.229, 0.224, 0.225)   # ImageNet std
     augment: bool = True
 
 class DataTransformation:
@@ -43,7 +43,6 @@ class DataTransformation:
             ])
 
             logging.info("Image transformations created successfully.")
-
             return train_transform, test_transform
 
         except Exception as e:
